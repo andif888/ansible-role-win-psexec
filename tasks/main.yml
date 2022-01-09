@@ -1,0 +1,33 @@
+---
+# tasks file for ansible-role-win-psexec
+- name: Make sure extract directory exist
+  win_file:
+    path: '{{ ps_tools_extract_path }}'
+    state: directory
+
+- name: Download PSTools
+  win_get_url:
+    url: '{{ ps_tools_download_url }}'
+    dest: '{{ ps_tools_extract_path }}\{{ ps_tools_filename_zip }}'
+    force: no
+
+- name: Unzip PSTools
+  win_unzip:
+    src: '{{ ps_tools_extract_path }}\{{ ps_tools_filename_zip }}'
+    dest: '{{ ps_tools_extract_path }}\'
+    delete_archive: yes
+
+- name: Copy psexec to install Path
+  win_copy:
+    remote_src: yes
+    src: '{{ ps_tools_extract_path}}\{{ item }}'
+    dest: '{{ ps_tools_install_path }}\{{ item }}'
+  loop:
+    - PsExec.exe
+    - PsExec64.exe
+
+- name: Remove extract directory
+  win_file:
+    path: '{{ ps_tools_extract_path }}'
+    state: absent
+  when: pstools_delete_extract_dir == true

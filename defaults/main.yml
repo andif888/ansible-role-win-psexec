@@ -1,0 +1,7 @@
+---
+# defaults file for ansible-role-win-psexec
+ps_tools_extract_path: '%windir%\Temp\pstools'
+ps_tools_install_path: '%windir%\system32'
+ps_tools_download_url: 'https://download.sysinternals.com/files/PSTools.zip'
+ps_tools_filename_zip: 'PSTools.zip'
+pstools_delete_extract_dir: true
